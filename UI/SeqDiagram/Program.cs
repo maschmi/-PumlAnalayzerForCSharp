@@ -18,7 +18,7 @@ namespace SeqDiagram
         {
             if (args.Length == 1 && args[0] == "-d")
             {
-                var basePath = GetBasePath();
+                var basePath = GetBasePath("UI");
                 args = new string[] {
                 "-s",  Path.Combine(basePath, "codedocumentation.sln"), //solution
                 "-p", "DemoProject", //project
@@ -29,9 +29,9 @@ namespace SeqDiagram
 
             if (args.Length == 1 && args[0] == "-d1")
             {
-                var basePath = GetBasePath();
+                var basePath = GetBasePath("UI");
                 args = new string[] {
-                "-s",  Path.Combine(basePath, "codedocumentation.sln"), //solution
+                "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
                 "-p", "DemoProject", //project
                 "-c", "ClassA", //class
                 "-m", "ConditionalIncrease", //method
@@ -40,9 +40,9 @@ namespace SeqDiagram
 
             if (args.Length == 1 && args[0] == "-dev")
             {
-                var basePath = GetBasePath();
+                var basePath = GetBasePath("UI");
                 args = new string[] {
-                "-s",  Path.Combine(basePath, "codedocumentation.sln"), //solution
+                "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
                 "-p", "TestProject", //project
                 "-c", "ClassA", //class
                 "-m", "OnlyReturn", //method
@@ -89,10 +89,11 @@ namespace SeqDiagram
             }
         }
 
-        private static string GetBasePath()
+        private static string GetBasePath(string v)
         {
             var assemblyPath = GetAssemblyDirectory();
-            return assemblyPath.Substring(0, assemblyPath.IndexOf("DrawSeqCli"));
+            var projectPath = assemblyPath.Substring(0, assemblyPath.IndexOf("SeqDiagram"));
+            return projectPath.Split(v, 2, StringSplitOptions.None)[0];
         }
 
         private static string GetAssemblyDirectory()

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SeqDiagram": {
+      "commandName": "Project",
+      "commandLineArgs": "-d1"
+    }
+  }
+}
