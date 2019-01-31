@@ -1,4 +1,7 @@
-﻿using CodeAnalyzer.SyntaxAnalysis;
+﻿using Buildalyzer;
+using Buildalyzer.Workspaces;
+using CodeAnalyzer;
+using CodeAnalyzer.SyntaxAnalysis;
 using Logger;
 using Microsoft.CodeAnalysis;
 using System;
@@ -8,21 +11,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeAnalyzer
+namespace WorkspaceAnalyzer
 {
-    public class ProjectAnalyzer : IProjectAnalyzer
+    public class ProjectAnalysis : IProjectAnalysis
     {
-        private readonly Solution _solution;
+        
         private readonly IDoLog _logger;
-        private IEnumerable<string> _outputFiles;
+        private AnalyzerManager _manager;
 
         public IDictionary<string, IFileStructure> AnalyzedFiles { get; private set; }
         public IDictionary<string, IClassStructure> AnalyzedClasses { get; private set; }
 
-        public ProjectAnalyzer(Solution solution, IEnumerable<string> solutionOutputFiles, IDoLog logger)
+        public ProjectAnalysis(AnalyzerManager manager, IDoLog logger)
         {
-            _solution = solution;
-            _outputFiles = solutionOutputFiles;
+            _manager = manager;            
 
             if (logger == null)
                 logger = new NullLogger();
@@ -32,19 +34,27 @@ namespace CodeAnalyzer
 
         public async Task LoadProject(string project)
         {
-            var testProject = _solution.Projects.Where(p => p.Name == project).FirstOrDefault();
-            _logger.WriteLine("Loaded " + testProject.Name);
-            await AnalyzeProject(testProject, _outputFiles);
+            Buildalyzer.ProjectAnalyzer testProject = _manager.Projects.Where(k => k.Key.Contains(project)).FirstOrDefault().Value;
+
+            _logger.WriteLine("Loaded " + testProject.ProjectFile.ToString());
+            await AnalyzeProject(testProject);
         }
 
-        private async Task AnalyzeProject(Project testProject, IEnumerable<string> solutionAssemblies)
+        private async Task AnalyzeProject(Buildalyzer.ProjectAnalyzer testProject)
         {
-            var documents = testProject.Documents
-                .Where(d => d.SourceCodeKind == SourceCodeKind.Regular && d.SupportsSyntaxTree == true)
-                .Where(d => !d.FilePath.Contains("AssemblyInfo"))
-                .Select(d => d.FilePath).ToArray();
+            using (var workspace = testProject.GetWorkspace())
+            {
+                var projectToAnalyze = workspace.CurrentSolution.Projects.Where(p => p.FilePath == testProject.ProjectFile.Path).First();
+                    
+                var documents = projectToAnalyze.Documents
+                   .Where(d => d.SourceCodeKind == SourceCodeKind.Regular && d.SupportsSyntaxTree == true)
+                   .Where(d => !d.FilePath.Contains("AssemblyInfo"))
+                   .Select(d => d.FilePath).ToArray();
 
-            AnalyzedFiles = await ParseFiles(documents, solutionAssemblies, testProject);
+                var solutionAssemblies = workspace.CurrentSolution.Projects.Select(p => p.OutputFilePath).ToList();
+                AnalyzedFiles = await ParseFiles(documents, solutionAssemblies, projectToAnalyze);
+                
+            }
 
             AnalyzedClasses = new Dictionary<string, IClassStructure>();
             foreach (var file in AnalyzedFiles)
@@ -52,7 +62,7 @@ namespace CodeAnalyzer
                 var structure = file.Value;
                 foreach (var cls in structure.Classes)
                     AnalyzedClasses.Add(cls.Classname, cls);
-            }
+            }            
         }
 
         private async Task<IDictionary<string, IFileStructure>> ParseFiles(string[] documents, IEnumerable<string> solutionAssemblies, Project testProject)

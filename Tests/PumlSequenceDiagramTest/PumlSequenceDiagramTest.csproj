@@ -6,11 +6,17 @@
 
   <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.6.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="Moq" Version="4.10.1" />
     <PackageReference Include="NUnit" Version="3.11.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.12.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CodeAnalyzer\CodeAnalyzer._Api\CodeAnalyzer._Api.csproj" />
+    <ProjectReference Include="..\..\CodeAnalyzer\CodeAnalyzer._Impl\CodeAnalyzer._Impl.csproj" />
+    <ProjectReference Include="..\..\Logging\Logging._Api\Logging._Api.csproj" />
+    <ProjectReference Include="..\..\Logging\Logging._Impl\Logging._Impl.csproj" />
     <ProjectReference Include="..\..\PumlDiagramOutput\SequenceDiagram._Api\SequenceDiagram._Api.csproj" />
     <ProjectReference Include="..\..\PumlDiagramOutput\SequenceDiagram._Impl\SequenceDiagram._Impl.csproj" />
   </ItemGroup>

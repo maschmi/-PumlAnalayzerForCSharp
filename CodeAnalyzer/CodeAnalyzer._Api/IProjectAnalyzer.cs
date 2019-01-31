@@ -4,7 +4,7 @@ using CodeAnalyzer.SyntaxAnalysis;
 
 namespace CodeAnalyzer
 {
-    public interface IProjectAnalyzer
+    public interface IProjectAnalysis
     {
         IDictionary<string, IClassStructure> AnalyzedClasses { get; }
         IDictionary<string, IFileStructure> AnalyzedFiles { get; }
