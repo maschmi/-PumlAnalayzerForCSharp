@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SequenceDiagram.Extensions;
 using SequenceDiagram.MethodStatements.Scopes;
+using SequenceDiagram.MethodStatements.Wrapper;
 
 namespace SequenceDiagram.MethodStatements
 {
@@ -27,7 +28,12 @@ namespace SequenceDiagram.MethodStatements
             if (!AmIResponsible(syntaxSymbol.Item1))
                 return;
 
-            var caller = method.GetMethodSymbol().ContainingSymbol.ToDisplayString().MaskSpecialChars();
+            string caller = caller = method.GetMethodSymbol().ContainingSymbol.ToDisplayString();
+
+            if (((InternalMethodStructure)method).IsStartMethod)
+                caller = caller + "." + method.MethodName;
+
+            caller = caller.MaskSpecialChars();
 
             var newSyntaxTree = (ObjectCreationExpressionSyntax)syntaxSymbol.Item1.TrackNodes();
 

@@ -2,7 +2,7 @@
   "profiles": {
     "SeqDiagram": {
       "commandName": "Project",
-      "commandLineArgs": "-d1"
+      "commandLineArgs": "-dev"
     }
   }
 }

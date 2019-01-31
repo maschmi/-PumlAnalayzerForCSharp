@@ -4,11 +4,10 @@ using CodeAnalyzer;
 using CodeAnalyzer.SyntaxAnalysis;
 using Logger;
 using Microsoft.CodeAnalysis;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace WorkspaceAnalyzer
@@ -34,16 +33,18 @@ namespace WorkspaceAnalyzer
 
         public async Task LoadProject(string project)
         {
-            Buildalyzer.ProjectAnalyzer testProject = _manager.Projects.Where(k => k.Key.Contains(project)).FirstOrDefault().Value;
+            ProjectAnalyzer testProject = _manager.Projects.Where(k => k.Key.Contains(project)).FirstOrDefault().Value;
+            if (testProject == null)
+                throw new FileNotFoundException("Project file not found!");
 
-            _logger.WriteLine("Loaded " + testProject.ProjectFile.ToString());
+            _logger.WriteLine("Loaded " + testProject);
             await AnalyzeProject(testProject);
         }
 
-        private async Task AnalyzeProject(Buildalyzer.ProjectAnalyzer testProject)
+        private async Task AnalyzeProject(ProjectAnalyzer testProject)
         {
             using (var workspace = testProject.GetWorkspace())
-            {
+            {                
                 var projectToAnalyze = workspace.CurrentSolution.Projects.Where(p => p.FilePath == testProject.ProjectFile.Path).First();
                     
                 var documents = projectToAnalyze.Documents
@@ -52,8 +53,7 @@ namespace WorkspaceAnalyzer
                    .Select(d => d.FilePath).ToArray();
 
                 var solutionAssemblies = workspace.CurrentSolution.Projects.Select(p => p.OutputFilePath).ToList();
-                AnalyzedFiles = await ParseFiles(documents, solutionAssemblies, projectToAnalyze);
-                
+                AnalyzedFiles = await ParseFiles(documents, solutionAssemblies, projectToAnalyze);                
             }
 
             AnalyzedClasses = new Dictionary<string, IClassStructure>();

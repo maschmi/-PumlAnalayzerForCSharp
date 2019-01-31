@@ -1,11 +1,7 @@
 ﻿using CodeAnalyzer.SyntaxAnalysis;
 using Microsoft.CodeAnalysis;
 using SequenceDiagram.MethodStatements.Scopes;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SequenceDiagram.MethodStatements.Wrapper

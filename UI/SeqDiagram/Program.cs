@@ -3,7 +3,6 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using CodeAnalyzer;
 using CodeAnalyzer.Context;
 using CodeAnalyzer.InterfaceResolver;
 using Logger;
@@ -43,7 +42,7 @@ namespace SeqDiagram
                 var basePath = GetBasePath("UI");
                 args = new string[] {
                 "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
-                "-p", "TestProject", //project
+                "-p", "DemoProject", //project
                 "-c", "ClassA", //class
                 "-m", "OnlyReturn", //method
                 "-o", Path.Combine(basePath, "demo3.wsd") }; //outfile

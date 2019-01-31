@@ -51,8 +51,14 @@ namespace SequenceDiagram.MethodStatements
 
         private async Task CalculateMethodCall(IMethodSymbol call, IMethodStructure method, int depth, string entryMethod)
         {
-            var caller = method.GetMethodSymbol().ContainingSymbol.ToDisplayString().MaskSpecialChars();
+            string caller = caller = method.GetMethodSymbol().ContainingSymbol.ToDisplayString();
+            
+            if (((InternalMethodStructure)method).IsStartMethod)
+                caller = caller + "." + method.MethodName;
 
+            caller = caller.MaskSpecialChars();
+            
+                
             if (caller + "." + method.MethodName == entryMethod)
                 caller = entryMethod;
 

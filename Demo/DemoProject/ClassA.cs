@@ -47,7 +47,7 @@ namespace TestProject
             if (_stringClass.ReturnStringValue(test) == "true")
                 return _stringClass.ReturnStringValue(test);
 
-            return false.ToString();
+            throw new InvalidOperationException();
         }
 
         public void ConditionalIncrease(bool shallIGrow)
