@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>SequenceDiagram</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodeAnalyzer\CodeAnalyzer._Api\CodeAnalyzer._Api.csproj" />
+  </ItemGroup>
+
+</Project>
