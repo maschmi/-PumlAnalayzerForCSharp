@@ -2,7 +2,7 @@
   "profiles": {
     "WinSeqDiag": {
       "commandName": "Project",
-      "commandLineArgs": "-dev"
+      "commandLineArgs": "-d1"
     }
   }
 }

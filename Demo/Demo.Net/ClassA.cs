@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TestProject
+namespace DemoNet
 {
     public class ClassA
     {
@@ -47,7 +47,7 @@ namespace TestProject
             if (_stringClass.ReturnStringValue(test) == "true")
                 return _stringClass.ReturnStringValue(test);
 
-            throw new InvalidOperationException();
+            return false.ToString();
         }
 
         public void ConditionalIncrease(bool shallIGrow)

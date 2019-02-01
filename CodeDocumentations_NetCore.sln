@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeqDiagram", "UI\SeqDiagram
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkspaceAnalyzer._Impl", "CodeAnalyzer\SolutionAnalyzer._Impl\WorkspaceAnalyzer._Impl.csproj", "{87CC9924-C114-45C0-8B36-25FF0C09A2A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Net", "Demo\Demo.Net\Demo.Net.csproj", "{DBCFB66A-F781-40A7-8F31-F9BD250872B9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoNet", "Demo\Demo.Net\DemoNet.csproj", "{DBCFB66A-F781-40A7-8F31-F9BD250872B9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsWorkspaceAnalyzer", "WindowsWorkspaceAnalyzer\WindowsWorkspaceAnalyzer.csproj", "{D5699973-03F8-42CF-85E6-90E62CA953EC}"
 EndProject

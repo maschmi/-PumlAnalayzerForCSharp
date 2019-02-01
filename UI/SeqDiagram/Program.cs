@@ -19,8 +19,8 @@ namespace SeqDiagram
             {
                 var basePath = GetBasePath("UI");
                 args = new string[] {
-                "-s",  Path.Combine(basePath, "codedocumentation.sln"), //solution
-                "-p", "DemoProject", //project
+                "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
+                "-p", "DemoNet", //project
                 "-c", "ClassA", //class
                 "-m", "IncreaseList", //method
                 "-o", Path.Combine(basePath, "demo1.wsd") }; //outfile
@@ -31,7 +31,7 @@ namespace SeqDiagram
                 var basePath = GetBasePath("UI");
                 args = new string[] {
                 "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
-                "-p", "DemoProject", //project
+                "-p", "DemoNet", //project
                 "-c", "ClassA", //class
                 "-m", "ConditionalIncrease", //method
                 "-o", Path.Combine(basePath, "demo2.wsd") }; //outfile
@@ -42,11 +42,12 @@ namespace SeqDiagram
                 var basePath = GetBasePath("UI");
                 args = new string[] {
                 "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
-                "-p", "Demo.Net", //project
+                "-p", "DemoNet", //project
                 "-c", "ClassA", //class
                 "-m", "OnlyReturn", //method
                 "-o", Path.Combine(basePath, "demo3.wsd") }; //outfile
-        }
+            }
+
 
             var cfgCtx = new ConfigContext(InterfaceResolverType.ProjectLevel);
 

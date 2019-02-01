@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TestProject
+namespace DemoNet
 {
     public class ClassB
     {
