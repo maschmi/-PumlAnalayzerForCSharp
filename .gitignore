@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /demo2.wsd
+/demo3.wsd
