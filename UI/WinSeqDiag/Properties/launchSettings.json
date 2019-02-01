@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WinSeqDiag": {
+      "commandName": "Project",
+      "commandLineArgs": "-dev"
+    }
+  }
+}

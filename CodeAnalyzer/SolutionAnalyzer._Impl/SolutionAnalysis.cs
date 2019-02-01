@@ -19,6 +19,12 @@ namespace WorkspaceAnalyzer
 
         public AnalyzerManager AnalyzeManager { get; private set; }
 
+        public IEnumerable<string> OutputFiles => throw new NotImplementedException();
+
+        public Solution ParsedSolution => throw new NotImplementedException();
+
+        public IEnumerable<Project> Projects => throw new NotImplementedException();
+
         public SolutionAnalysis(string solution, IDoLog logger = null)
         {
             if (!File.Exists(solution))
@@ -51,7 +57,7 @@ namespace WorkspaceAnalyzer
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
-        protected virtual void Dispose(bool disposing)
+        public virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
@@ -80,6 +86,11 @@ namespace WorkspaceAnalyzer
             Dispose(true);
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

@@ -3,13 +3,14 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using CodeAnalyzer;
 using CodeAnalyzer.Context;
 using CodeAnalyzer.InterfaceResolver;
 using Logger;
 using SequenceDiagram;
-using WorkspaceAnalyzer;
+using WorkspaceAnalyzer.Windows;
 
-namespace SeqDiagram
+namespace WinSeqDiag
 {
     public class Program
     {
@@ -46,7 +47,7 @@ namespace SeqDiagram
                 "-c", "ClassA", //class
                 "-m", "OnlyReturn", //method
                 "-o", Path.Combine(basePath, "demo3.wsd") }; //outfile
-        }
+            }
 
             var cfgCtx = new ConfigContext(InterfaceResolverType.ProjectLevel);
 
@@ -55,12 +56,12 @@ namespace SeqDiagram
                 var options = new ProgramOptions(args);
             
                 IDoLog logger = new ConsoleLogger();
-
-                using (var solutionAnalyzer = new SolutionAnalysis(options.PathToSolution, logger))
+                using (var solutionAnalyzer = new SolutionAnalyzer(options.PathToSolution, logger))
                 {
-                    solutionAnalyzer.LoadSolution();
 
-                    var projectAnalyzer = new ProjectAnalysis(solutionAnalyzer, logger);
+                    await solutionAnalyzer.LoadSolution();
+
+                    var projectAnalyzer = new ProjectAnalyzer(solutionAnalyzer.ParsedSolution, solutionAnalyzer.OutputFiles, logger);
                     await projectAnalyzer.LoadProject(options.ProjectName);
 
                     var interfaceResolver = InterfaceResolverFactory.GetInterfaceResolver(solutionAnalyzer, projectAnalyzer, logger, cfgCtx);
@@ -72,7 +73,6 @@ namespace SeqDiagram
 
                     Console.WriteLine("Wrote to " + options.OutputFile);
                 }
-                
             }
             catch (InvalidOperationException ex)
             {
@@ -91,19 +91,19 @@ namespace SeqDiagram
             }
         }
 
-        private static string GetBasePath(string v)
+        private static string GetBasePath(string sep)
         {
             var assemblyPath = GetAssemblyDirectory();
-            var projectPath = assemblyPath.Substring(0, assemblyPath.IndexOf("SeqDiagram"));
-            return projectPath.Split(v, 2, StringSplitOptions.None)[0];
+            var projectPath = assemblyPath.Substring(0, assemblyPath.IndexOf("WinSeqDiag"));
+            return projectPath.Split(new string[] { sep }, 2, StringSplitOptions.None)[0];
         }
 
         private static string GetAssemblyDirectory()
         {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);            
+            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            UriBuilder uri = new UriBuilder(codeBase);
+            string path = Uri.UnescapeDataString(uri.Path);
+            return Path.GetDirectoryName(path);
         }
     }
 }
