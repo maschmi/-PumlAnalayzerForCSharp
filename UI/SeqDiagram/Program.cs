@@ -42,7 +42,7 @@ namespace SeqDiagram
                 var basePath = GetBasePath("UI");
                 args = new string[] {
                 "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
-                "-p", "DemoProject", //project
+                "-p", "Demo.Net", //project
                 "-c", "ClassA", //class
                 "-m", "OnlyReturn", //method
                 "-o", Path.Combine(basePath, "demo3.wsd") }; //outfile
@@ -55,20 +55,22 @@ namespace SeqDiagram
             
                 IDoLog logger = new ConsoleLogger();
 
-                var solutionAnalyzer = new SolutionAnalysis(options.PathToSolution, logger);
-                solutionAnalyzer.LoadSolution();
+                using (var solutionAnalyzer = new SolutionAnalysis(options.PathToSolution, logger))
+                {
+                    solutionAnalyzer.LoadSolution();
 
-                var projectAnalyzer = new ProjectAnalysis(solutionAnalyzer.AnalyzeManager, logger);
-                await projectAnalyzer.LoadProject(options.ProjectName);
+                    var projectAnalyzer = new ProjectAnalysis(solutionAnalyzer, logger);
+                    await projectAnalyzer.LoadProject(options.ProjectName);
 
-                var interfaceResolver = InterfaceResolverFactory.GetInterfaceResolver(solutionAnalyzer, projectAnalyzer, logger, cfgCtx);
+                    var interfaceResolver = InterfaceResolverFactory.GetInterfaceResolver(solutionAnalyzer, projectAnalyzer, logger, cfgCtx);
 
-                var sequenceDiagram = new SequenceDiagramGenerator(projectAnalyzer.AnalyzedClasses, interfaceResolver, logger);
-                string diagramText = await sequenceDiagram.GetSequenceDiagramForMethod(options.ClassName, options.MethodName);
+                    var sequenceDiagram = new SequenceDiagramGenerator(projectAnalyzer.AnalyzedClasses, interfaceResolver, logger);
+                    string diagramText = await sequenceDiagram.GetSequenceDiagramForMethod(options.ClassName, options.MethodName);
 
-                await WriteDiagramToFile(diagramText, options.OutputFile);
+                    await WriteDiagramToFile(diagramText, options.OutputFile);
 
-                Console.WriteLine("Wrote to " + options.OutputFile);
+                    Console.WriteLine("Wrote to " + options.OutputFile);
+                }
                 
             }
             catch (InvalidOperationException ex)

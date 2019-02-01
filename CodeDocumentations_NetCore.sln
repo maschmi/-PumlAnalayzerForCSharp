@@ -13,25 +13,27 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logging", "Logging", "{05E5
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging._Api", "Logging\Logging._Api\Logging._Api.csproj", "{81AA3285-85E0-4D02-86FA-64A564868393}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging._Impl", "Logging\Logging._Impl\Logging._Impl.csproj", "{43F3F113-8993-440D-8B08-22193F19BA58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging._Impl", "Logging\Logging._Impl\Logging._Impl.csproj", "{43F3F113-8993-440D-8B08-22193F19BA58}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PumlDiagramOutput", "PumlDiagramOutput", "{3757219F-E806-4DE3-9C19-10EFBAC0B6F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SequenceDiagram._Api", "PumlDiagramOutput\SequenceDiagram._Api\SequenceDiagram._Api.csproj", "{D8966D97-8D0E-43D8-9C5A-3BD8F0EE0B03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SequenceDiagram._Api", "PumlDiagramOutput\SequenceDiagram._Api\SequenceDiagram._Api.csproj", "{D8966D97-8D0E-43D8-9C5A-3BD8F0EE0B03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SequenceDiagram._Impl", "PumlDiagramOutput\SequenceDiagram._Impl\SequenceDiagram._Impl.csproj", "{D2C66B4A-C631-41DB-9E8A-20BAE6A8B1E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SequenceDiagram._Impl", "PumlDiagramOutput\SequenceDiagram._Impl\SequenceDiagram._Impl.csproj", "{D2C66B4A-C631-41DB-9E8A-20BAE6A8B1E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PumlSequenceDiagramTest", "Tests\PumlSequenceDiagramTest\PumlSequenceDiagramTest.csproj", "{D31B1690-A261-4204-AF56-6F7D7F07D89E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PumlSequenceDiagramTest", "Tests\PumlSequenceDiagramTest\PumlSequenceDiagramTest.csproj", "{D31B1690-A261-4204-AF56-6F7D7F07D89E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{8E080439-90E3-4166-A33D-82A7655A0742}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoProject", "Demo\DemoProject\DemoProject.csproj", "{F922DCAD-FFE1-4CE7-923A-46CD36AEC817}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoProject", "Demo\DemoProject\DemoProject.csproj", "{F922DCAD-FFE1-4CE7-923A-46CD36AEC817}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{0A161CF2-8D6B-4C4F-AD07-E88E27053035}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SeqDiagram", "UI\SeqDiagram\SeqDiagram.csproj", "{40B8E434-4FDA-4442-9FF3-2363C50088B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeqDiagram", "UI\SeqDiagram\SeqDiagram.csproj", "{40B8E434-4FDA-4442-9FF3-2363C50088B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkspaceAnalyzer._Impl", "CodeAnalyzer\SolutionAnalyzer._Impl\WorkspaceAnalyzer._Impl.csproj", "{87CC9924-C114-45C0-8B36-25FF0C09A2A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkspaceAnalyzer._Impl", "CodeAnalyzer\SolutionAnalyzer._Impl\WorkspaceAnalyzer._Impl.csproj", "{87CC9924-C114-45C0-8B36-25FF0C09A2A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Net", "Demo\Demo.Net\Demo.Net.csproj", "{DBCFB66A-F781-40A7-8F31-F9BD250872B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +81,10 @@ Global
 		{87CC9924-C114-45C0-8B36-25FF0C09A2A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87CC9924-C114-45C0-8B36-25FF0C09A2A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87CC9924-C114-45C0-8B36-25FF0C09A2A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBCFB66A-F781-40A7-8F31-F9BD250872B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBCFB66A-F781-40A7-8F31-F9BD250872B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBCFB66A-F781-40A7-8F31-F9BD250872B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBCFB66A-F781-40A7-8F31-F9BD250872B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +100,7 @@ Global
 		{F922DCAD-FFE1-4CE7-923A-46CD36AEC817} = {8E080439-90E3-4166-A33D-82A7655A0742}
 		{40B8E434-4FDA-4442-9FF3-2363C50088B3} = {0A161CF2-8D6B-4C4F-AD07-E88E27053035}
 		{87CC9924-C114-45C0-8B36-25FF0C09A2A3} = {7D4C9C61-D508-4388-BC22-460999542991}
+		{DBCFB66A-F781-40A7-8F31-F9BD250872B9} = {8E080439-90E3-4166-A33D-82A7655A0742}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4E67D23-65C9-44A4-ABF7-17638D5F0264}
