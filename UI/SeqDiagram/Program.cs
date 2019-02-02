@@ -15,45 +15,14 @@ namespace SeqDiagram
     {
         public static async Task Main(string[] args)
         {
-            if (args.Length == 1 && args[0] == "-d")
-            {
-                var basePath = GetBasePath("UI");
-                args = new string[] {
-                "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
-                "-p", "DemoNet", //project
-                "-c", "ClassA", //class
-                "-m", "IncreaseList", //method
-                "-o", Path.Combine(basePath, "demo1.wsd") }; //outfile
-            }
-
-            if (args.Length == 1 && args[0] == "-d1")
-            {
-                var basePath = GetBasePath("UI");
-                args = new string[] {
-                "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
-                "-p", "DemoNet", //project
-                "-c", "ClassA", //class
-                "-m", "ConditionalIncrease", //method
-                "-o", Path.Combine(basePath, "demo2.wsd") }; //outfile
-            }
-
-            if (args.Length == 1 && args[0] == "-dev")
-            {
-                var basePath = GetBasePath("UI");
-                args = new string[] {
-                "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
-                "-p", "DemoNet", //project
-                "-c", "ClassA", //class
-                "-m", "OnlyReturn", //method
-                "-o", Path.Combine(basePath, "demo3.wsd") }; //outfile
-            }
-
-
             var cfgCtx = new ConfigContext(InterfaceResolverType.ProjectLevel);
 
             try
             {
                 var options = new ProgramOptions(args);
+
+                if (!string.IsNullOrEmpty(options.DemoCase))
+                    options.CreateDemoCase();
 
                 IDoLog logger = new ConsoleLogger(verbose: options.VerboseLogging, debug: options.DebugLogging);
                 var msBuildPath = options.PathToMSBuild;
@@ -97,19 +66,6 @@ namespace SeqDiagram
             }
         }
 
-        private static string GetBasePath(string v)
-        {
-            var assemblyPath = GetAssemblyDirectory();
-            var projectPath = assemblyPath.Substring(0, assemblyPath.IndexOf("SeqDiagram"));
-            return projectPath.Split(v, 2, StringSplitOptions.None)[0];
-        }
-
-        private static string GetAssemblyDirectory()
-        {
-                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
-                return Path.GetDirectoryName(path);            
-        }
+     
     }
 }

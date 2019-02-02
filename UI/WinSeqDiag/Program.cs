@@ -16,45 +16,16 @@ namespace WinSeqDiag
     {
         public static async Task Main(string[] args)
         {
-            if (args.Length == 1 && args[0] == "-d")
-            {
-                var basePath = GetBasePath("UI");
-                args = new string[] {
-                "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
-                "-p", "DemoNet", //project
-                "-c", "ClassA", //class
-                "-m", "IncreaseList", //method
-                "-o", Path.Combine(basePath, "demo1.wsd") }; //outfile
-            }
-
-            if (args.Length == 1 && args[0] == "-d1")
-            {
-                var basePath = GetBasePath("UI");
-                args = new string[] {
-                "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
-                "-p", "DemoProject", //project
-                "-c", "ClassA", //class
-                "-m", "ConditionalIncrease", //method
-                "-o", Path.Combine(basePath, "demo2.wsd") }; //outfile
-            }
-
-            if (args.Length == 1 && args[0] == "-dev")
-            {
-                var basePath = GetBasePath("UI");
-                args = new string[] {
-                "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
-                "-p", "DemoNet", //project
-                "-c", "ClassA", //class
-                "-m", "OnlyReturn", //method
-                "-o", Path.Combine(basePath, "demo3.wsd") }; //outfile
-            }
-
             var cfgCtx = new ConfigContext(InterfaceResolverType.ProjectLevel);
 
             try
             {
                 var options = new ProgramOptions(args);
-            
+
+                if (!string.IsNullOrEmpty(options.DemoCase))
+                    options.CreateDemoCase();
+
+
                 IDoLog logger = new ConsoleLogger();
                 using (var solutionAnalyzer = new SolutionAnalyzer(options.PathToSolution, logger))
                 {

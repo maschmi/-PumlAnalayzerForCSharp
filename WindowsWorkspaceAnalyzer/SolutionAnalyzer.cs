@@ -56,6 +56,7 @@ namespace WorkspaceAnalyzer.Windows
             // TODO: Do analysis on the projects in the loaded solution
 
             _logger.Info("Extracting ouputFiles");
+
             if (string.IsNullOrWhiteSpace(excludeFiles))
                 OutputFiles = ParsedSolution.Projects
                     .Select(p => p.OutputFilePath).ToList();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +19,10 @@ namespace SeqDiagram
         public string ExcludingAssemblies { get; private set; }
         public bool VerboseLogging { get; private set; }
         public bool DebugLogging { get; private set; }
+
+       
+
+        public string DemoCase { get; private set; }
 
         private const string HELP_TEXT =
             "This helper program tries to draw a seqence diagram with a maximal depth of 10 from the given method.\n" +
@@ -44,7 +49,8 @@ namespace SeqDiagram
         public ProgramOptions(string[] args)
         {
             FilterArgs(args);
-            Validate();
+            if (string.IsNullOrEmpty(DemoCase))
+                Validate();
         }
 
         private void Validate()
@@ -99,6 +105,12 @@ namespace SeqDiagram
                         DebugLogging = true;
                         break;
 
+                    case "-d":
+                    case "-d1":
+                    case "-dev":
+                        DemoCase = args[i];
+                        break;
+
                     default:
                         PrintHelp();
                         break;
@@ -107,10 +119,58 @@ namespace SeqDiagram
             }
         }
 
+        internal void CreateDemoCase()
+        {
+            if (DemoCase =="-d")
+            {
+                var basePath = GetBasePath("UI");
+                PathToSolution = Path.Combine(basePath, "CodeDocumentations_NetCore.sln"); //solution
+                ProjectName = "DemoNet"; //project
+                ClassName = "ClassA"; //class
+                MethodName = "IncreaseList"; //method
+                OutputFile = Path.Combine(basePath, "demo.wsd"); //outfile
+            }
+
+            if (DemoCase == "-d1")
+            {
+                var basePath = GetBasePath("UI");
+                PathToSolution = Path.Combine(basePath, "CodeDocumentations_NetCore.sln"); //solution
+                ProjectName = "DemoNet"; //project
+                ClassName = "ClassA"; //class
+                MethodName = "ConditionalIncrease"; //method
+                OutputFile = Path.Combine(basePath, "demo1.wsd"); //outfile                
+            }
+
+            if (DemoCase == "-dev")
+            {
+                var basePath = GetBasePath("UI");
+                PathToSolution = Path.Combine(basePath, "CodeDocumentations_NetCore.sln"); //solution
+                ProjectName = "DemoProject"; //project
+                ClassName = "ClassA"; //class
+                MethodName = "ConditionalIncrease"; //method
+                OutputFile = Path.Combine(basePath, "dev.wsd"); //outfile                
+            }
+        }
+
         private void PrintHelp()
         {
             Console.WriteLine(HELP_TEXT);
             throw new InvalidOperationException();
+        }
+
+        private static string GetBasePath(string v)
+        {
+            var assemblyPath = GetAssemblyDirectory();
+            var projectPath = assemblyPath.Substring(0, assemblyPath.IndexOf("SeqDiagram"));
+            return projectPath.Split(v, 2, StringSplitOptions.None)[0];
+        }
+
+        private static string GetAssemblyDirectory()
+        {
+            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            UriBuilder uri = new UriBuilder(codeBase);
+            string path = Uri.UnescapeDataString(uri.Path);
+            return Path.GetDirectoryName(path);
         }
     }
 }
