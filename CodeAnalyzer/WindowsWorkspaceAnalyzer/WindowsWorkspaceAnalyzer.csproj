@@ -17,9 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CodeAnalyzer\CodeAnalyzer._Api\CodeAnalyzer._Api.csproj" />
-    <ProjectReference Include="..\CodeAnalyzer\CodeAnalyzer._Impl\CodeAnalyzer._Impl.csproj" />
-    <ProjectReference Include="..\Logging\Logging._Api\Logging._Api.csproj" />
+    <ProjectReference Include="..\..\Logging\Logging._Api\Logging._Api.csproj" />
+    <ProjectReference Include="..\CodeAnalyzer._Api\CodeAnalyzer._Api.csproj" />
+    <ProjectReference Include="..\CodeAnalyzer._Impl\CodeAnalyzer._Impl.csproj" />
   </ItemGroup>
 
 </Project>

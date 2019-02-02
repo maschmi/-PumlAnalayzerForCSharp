@@ -132,10 +132,6 @@ namespace WorkspaceAnalyzer.Windows
             // GC.SuppressFinalize(this);
         }
 
-        void ISolutionAnalyzer.LoadSolution()
-        {
-            throw new NotImplementedException();
-        }
         #endregion
     }
 }

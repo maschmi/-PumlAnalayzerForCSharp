@@ -111,11 +111,7 @@ namespace WorkspaceAnalyzer
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }      
-
-        void ISolutionAnalyzer.LoadSolution()
-        {
-            throw new NotImplementedException();
-        }
+      
         #endregion
     }
 }

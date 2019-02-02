@@ -124,7 +124,7 @@ namespace SeqDiagram
             if (DemoCase =="-d")
             {
                 var basePath = GetBasePath("UI");
-                PathToSolution = Path.Combine(basePath, "CodeDocumentations_NetCore.sln"); //solution
+                PathToSolution = Path.Combine(basePath, "CodeDocumentations.sln"); //solution
                 ProjectName = "DemoNet"; //project
                 ClassName = "ClassA"; //class
                 MethodName = "IncreaseList"; //method
@@ -134,7 +134,7 @@ namespace SeqDiagram
             if (DemoCase == "-d1")
             {
                 var basePath = GetBasePath("UI");
-                PathToSolution = Path.Combine(basePath, "CodeDocumentations_NetCore.sln"); //solution
+                PathToSolution = Path.Combine(basePath, "CodeDocumentations.sln"); //solution
                 ProjectName = "DemoNet"; //project
                 ClassName = "ClassA"; //class
                 MethodName = "ConditionalIncrease"; //method
@@ -144,7 +144,7 @@ namespace SeqDiagram
             if (DemoCase == "-dev")
             {
                 var basePath = GetBasePath("UI");
-                PathToSolution = Path.Combine(basePath, "CodeDocumentations_NetCore.sln"); //solution
+                PathToSolution = Path.Combine(basePath, "CodeDocumentations.sln"); //solution
                 ProjectName = "DemoProject"; //project
                 ClassName = "ClassA"; //class
                 MethodName = "ConditionalIncrease"; //method

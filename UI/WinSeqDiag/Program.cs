@@ -26,7 +26,7 @@ namespace WinSeqDiag
                     options.CreateDemoCase();
 
 
-                IDoLog logger = new ConsoleLogger();
+                IDoLog logger = new ConsoleLogger(verbose: options.VerboseLogging, debug: options.DebugLogging);
                 using (var solutionAnalyzer = new SolutionAnalyzer(options.PathToSolution, logger))
                 {
                     await solutionAnalyzer.LoadSolution(options.ExcludingAssemblies);
