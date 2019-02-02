@@ -151,7 +151,7 @@ namespace WinSeqDiag
         {
             var assemblyPath = GetAssemblyDirectory();
             var projectPath = assemblyPath.Substring(0, assemblyPath.IndexOf("SeqDiagram"));
-            return projectPath.Split(v, 2, StringSplitOptions.None)[0];
+            return projectPath.Split(new string[] { v }, 2, StringSplitOptions.None)[0];
         }
 
         private static string GetAssemblyDirectory()

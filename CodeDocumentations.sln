@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkspaceAnalyzer._Impl", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoNet", "Demo\Demo.Net\DemoNet.csproj", "{DBCFB66A-F781-40A7-8F31-F9BD250872B9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsWorkspaceAnalyzer", "WindowsWorkspaceAnalyzer\WindowsWorkspaceAnalyzer.csproj", "{D5699973-03F8-42CF-85E6-90E62CA953EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WindowsWorkspaceAnalyzer", "CodeAnalyzer\WindowsWorkspaceAnalyzer\WindowsWorkspaceAnalyzer.csproj", "{D5699973-03F8-42CF-85E6-90E62CA953EC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinSeqDiag", "UI\WinSeqDiag\WinSeqDiag.csproj", "{8F014011-8E9B-454F-942D-A0939CF9E07F}"
 EndProject
