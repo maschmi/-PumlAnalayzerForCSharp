@@ -54,14 +54,20 @@ namespace SeqDiagram
             try
             {
                 var options = new ProgramOptions(args);
-            
-                IDoLog logger = new ConsoleLogger();
 
-                using (var solutionAnalyzer = new SolutionAnalysis(options.PathToSolution, logger))
+                IDoLog logger = new ConsoleLogger(verbose: options.VerboseLogging, debug: options.DebugLogging);
+                var msBuildPath = options.PathToMSBuild;
+                if (string.IsNullOrEmpty(msBuildPath))
                 {
-                    solutionAnalyzer.LoadSolution();
+                    msBuildPath = @"C:\Program Files\dotnet\sdk\2.2.103";
+                    logger.Warning("No Path to MSBuild given falling back to " + msBuildPath);
+                }
+                using (var solutionAnalyzer = new SolutionAnalyzer(options.PathToSolution, msBuildPath, logger))
+                {
 
-                    var projectAnalyzer = new ProjectAnalysis(solutionAnalyzer, logger);
+                    await solutionAnalyzer.LoadSolution(options.ExcludingAssemblies);
+
+                    var projectAnalyzer = new ProjectAnalyzer(solutionAnalyzer.ParsedSolution, solutionAnalyzer.OutputFiles, logger);
                     await projectAnalyzer.LoadProject(options.ProjectName);
 
                     var interfaceResolver = InterfaceResolverFactory.GetInterfaceResolver(solutionAnalyzer, projectAnalyzer, logger, cfgCtx);
@@ -73,7 +79,6 @@ namespace SeqDiagram
 
                     Console.WriteLine("Wrote to " + options.OutputFile);
                 }
-                
             }
             catch (InvalidOperationException ex)
             {

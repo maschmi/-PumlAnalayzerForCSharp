@@ -24,10 +24,6 @@ namespace WorkspaceAnalyzer.Windows
         public IEnumerable<string> OutputFiles { get; private set; }
         public IEnumerable<Project> Projects => ParsedSolution.Projects;
 
-        public AnalyzerManager AnalyzeManager => throw new NotImplementedException();
-
-        public AdhocWorkspace AnalyzerWorkspace => throw new NotImplementedException();
-
         public SolutionAnalyzer(string solution, IDoLog logger = null)
         {
             if (!File.Exists(solution))
@@ -39,17 +35,16 @@ namespace WorkspaceAnalyzer.Windows
             _logger = logger;            
         }        
 
-        public async Task LoadSolution()
+        public async Task LoadSolution(string excludeFiles)
         {
             PreapreMSBuildWorkspace();
-            await LoadSolutionImpl();
+            await LoadSolutionImpl(excludeFiles);
         }
 
-        private async Task LoadSolutionImpl()
+        private async Task LoadSolutionImpl(string excludeFiles)
         {
             // Print message for WorkspaceFailed event to help diagnosing project load failures.
             _workspace.WorkspaceFailed += WriteErrorMessage;
-                
 
             var solutionPath = _solution;
             _logger.Info($"Loading solution '{solutionPath}'");
@@ -61,7 +56,14 @@ namespace WorkspaceAnalyzer.Windows
             // TODO: Do analysis on the projects in the loaded solution
 
             _logger.Info("Extracting ouputFiles");
-            OutputFiles = ParsedSolution.Projects.Select(p => p.OutputFilePath).ToList();
+            if (string.IsNullOrWhiteSpace(excludeFiles))
+                OutputFiles = ParsedSolution.Projects
+                    .Select(p => p.OutputFilePath).ToList();
+            else
+                OutputFiles = ParsedSolution.Projects
+                    .Where(p => !(p.OutputFilePath.Contains(excludeFiles)))
+                    .Select(p => p.OutputFilePath).ToList();
+
             _workspace.WorkspaceFailed -= WriteErrorMessage;
         }
 
@@ -79,20 +81,20 @@ namespace WorkspaceAnalyzer.Windows
                 // Else throw exception
                 : throw new InvalidOperationException("No MSBuild installation found!");        
 
-            _logger.WriteLine($"Using MSBuild at '{instance.MSBuildPath}' to load projects.");
+            _logger.Info($"Using MSBuild at '{instance.MSBuildPath}' to load projects.");
 
             // NOTE: Be sure to register an instance with the MSBuildLocator 
             //       before calling MSBuildWorkspace.Create()
             //       otherwise, MSBuildWorkspace won't MEF compose.
             try
             {
-                MSBuildLocator.RegisterInstance(instance);
+               MSBuildLocator.RegisterInstance(instance);
             }
             catch (Exception ex)
             {
-                _logger.WriteLine(ex.Message);
+                _logger.Error(ex.Message);
             }
-            
+
             _workspace = MSBuildWorkspace.Create();
         }
 
@@ -127,14 +129,6 @@ namespace WorkspaceAnalyzer.Windows
             Dispose(true);
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
-        }
-
-
-        public void Dispose(int i)
-        {
-            _logger.WriteLine("Disposing: " + i);
-            
-            Dispose();
         }
 
         void ISolutionAnalyzer.LoadSolution()

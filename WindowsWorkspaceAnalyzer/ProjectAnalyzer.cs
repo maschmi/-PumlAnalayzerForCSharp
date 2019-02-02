@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace WorkspaceAnalyzer.Windows
 {
-    public class ProjectAnalyzer : IProjectAnalysis
+    public class ProjectAnalyzer : IProjectAnalyzer
     {
         private readonly Solution _solution;
         private readonly IDoLog _logger;
@@ -34,7 +34,7 @@ namespace WorkspaceAnalyzer.Windows
         public async Task LoadProject(string project)
         {
             var testProject = _solution.Projects.Where(p => p.Name == project).FirstOrDefault();
-            _logger.WriteLine("Loaded " + testProject.Name);
+            _logger.Info("Loaded " + testProject.Name);
             await AnalyzeProject(testProject, _outputFiles);
         }
 

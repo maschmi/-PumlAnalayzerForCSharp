@@ -13,8 +13,8 @@ namespace WinSeqDiag
         public string ProjectName { get; set; }
         public string ClassName { get; set; }
         public string MethodName { get; set; }
-        public string OutputFile { get; set; }
-
+        public string OutputFile { get; set; }        
+        public string ExcludingAssemblies { get; private set; }
 
         private const string HELP_TEXT =
             "This helper program tries to draw a seqence diagram with a maximal depth of 10 from the given method.\n" +
@@ -24,12 +24,16 @@ namespace WinSeqDiag
             "\t -c \t Classname with the method to analyze \n" +
             "\t -m \t Methodname to analyze \n" +
             "\t -o \t File to write puml syntax to \n" +
+            "\t -x \t Assemblies including the specifier will be excluded \n" +
+            "\t -b \t Path to dotnet SDK MSBuild.dll e.g. C:\\Program Files\\dotnet\\sdk\\2.2.103 \n" +
             "\n" +
             "Known issues \n " +
             "- Project to be analyzed must be compiled in debug setting first \n" +
             "- Interfaces are only resolved in the analyzed project \n" +
-            "- Needs to be restarted for every new method in the same solution \n" +
+            "- Needs to be restarted for every new method in the same solution \n" +          
+            "- OutOfMemoryException if solutions/projects are to big. Try to exclude some references using -x" +
             "- Overloaded methods are not tested yet \n";
+
 
         public ProgramOptions(string[] args)
         {
@@ -45,7 +49,10 @@ namespace WinSeqDiag
 
         private void FilterArgs(string[] args)
         {
-            for(int i = 0; i < args.Length; i++)
+            if (args.Length == 0)
+                PrintHelp();
+            
+            for (int i = 0; i < args.Length; i++)
             {
                 switch (args[i])
                 {
@@ -68,6 +75,10 @@ namespace WinSeqDiag
                     case "-o":
                         OutputFile = args[++i];
                         break;
+
+                    case "-x":
+                        ExcludingAssemblies = args[++i];
+                        break;                    
 
                     default:
                         PrintHelp();

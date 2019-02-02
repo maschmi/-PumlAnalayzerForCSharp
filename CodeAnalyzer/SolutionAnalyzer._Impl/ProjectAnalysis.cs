@@ -1,32 +1,27 @@
-﻿using Buildalyzer;
-using Buildalyzer.Workspaces;
-using CodeAnalyzer;
+﻿using CodeAnalyzer;
 using CodeAnalyzer.SyntaxAnalysis;
 using Logger;
 using Microsoft.CodeAnalysis;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace WorkspaceAnalyzer
 {
-    public class ProjectAnalysis : IProjectAnalysis
+    public class ProjectAnalyzer : IProjectAnalyzer
     {
-        
+        private readonly Solution _solution;
         private readonly IDoLog _logger;
-        private readonly WeakReference<AdhocWorkspace> _workspace;
-        private readonly WeakReference<AnalyzerManager> _manager;
+        private IEnumerable<string> _outputFiles;
 
         public IDictionary<string, IFileStructure> AnalyzedFiles { get; private set; }
         public IDictionary<string, IClassStructure> AnalyzedClasses { get; private set; }
 
-        public ProjectAnalysis(ISolutionAnalyzer solution, IDoLog logger)
+        public ProjectAnalyzer(Solution solution, IEnumerable<string> solutionOutputFiles, IDoLog logger)
         {
-            _workspace = new WeakReference<AdhocWorkspace>(solution.AnalyzerWorkspace);
-            _manager = new WeakReference<AnalyzerManager>(solution.AnalyzeManager);
+            _solution = solution;
+            _outputFiles = solutionOutputFiles;
 
             if (logger == null)
                 logger = new NullLogger();
@@ -36,34 +31,19 @@ namespace WorkspaceAnalyzer
 
         public async Task LoadProject(string project)
         {
-
-            if (!_manager.TryGetTarget(out AnalyzerManager manager))
-                throw new InvalidOperationException("Unable to load " + nameof(_manager) + " (" + _manager.GetType() +")");
-
-            ProjectAnalyzer testProject = manager.Projects.Where(k => k.Key.Contains(project)).FirstOrDefault().Value;
-            if (testProject == null)
-                throw new FileNotFoundException("Project file not found!");
-
-            _logger.WriteLine("Loaded " + testProject);
-            await AnalyzeProject(testProject);
+            var testProject = _solution.Projects.Where(p => p.Name == project).FirstOrDefault();
+            _logger.Info("Loaded " + testProject.Name);
+            await AnalyzeProject(testProject, _outputFiles);
         }
 
-        private async Task AnalyzeProject(ProjectAnalyzer testProject)
-        {            
-            if(!(_workspace.TryGetTarget(out AdhocWorkspace workspace)))
-                throw new InvalidOperationException("Unable to load " + nameof(_workspace) + " (" + _workspace.GetType() + ")");
-            if (!_manager.TryGetTarget(out AnalyzerManager manager))
-                throw new InvalidOperationException("Unable to load " + nameof(_manager) + " (" + _manager.GetType() + ")");
-
-            var projectToAnalyze = workspace.CurrentSolution.Projects.Where(p => p.FilePath == testProject.ProjectFile.Path).First();                
-            var documents = projectToAnalyze.Documents
+        private async Task AnalyzeProject(Project testProject, IEnumerable<string> solutionAssemblies)
+        {
+            var documents = testProject.Documents
                 .Where(d => d.SourceCodeKind == SourceCodeKind.Regular && d.SupportsSyntaxTree == true)
                 .Where(d => !d.FilePath.Contains("AssemblyInfo"))
                 .Select(d => d.FilePath).ToArray();
 
-            
-            var solutionAssemblies = workspace.CurrentSolution.Projects.Select(p => p.OutputFilePath).ToList();
-            AnalyzedFiles = await ParseFiles(documents, solutionAssemblies, projectToAnalyze);                
+            AnalyzedFiles = await ParseFiles(documents, solutionAssemblies, testProject);
 
             AnalyzedClasses = new Dictionary<string, IClassStructure>();
             foreach (var file in AnalyzedFiles)
@@ -71,8 +51,7 @@ namespace WorkspaceAnalyzer
                 var structure = file.Value;
                 foreach (var cls in structure.Classes)
                     AnalyzedClasses.Add(cls.Classname, cls);
-            }            
-         
+            }
         }
 
         private async Task<IDictionary<string, IFileStructure>> ParseFiles(string[] documents, IEnumerable<string> solutionAssemblies, Project testProject)

@@ -32,7 +32,7 @@ namespace WinSeqDiag
                 var basePath = GetBasePath("UI");
                 args = new string[] {
                 "-s",  Path.Combine(basePath, "CodeDocumentations_NetCore.sln"), //solution
-                "-p", "DemoNet", //project
+                "-p", "DemoProject", //project
                 "-c", "ClassA", //class
                 "-m", "ConditionalIncrease", //method
                 "-o", Path.Combine(basePath, "demo2.wsd") }; //outfile
@@ -58,8 +58,7 @@ namespace WinSeqDiag
                 IDoLog logger = new ConsoleLogger();
                 using (var solutionAnalyzer = new SolutionAnalyzer(options.PathToSolution, logger))
                 {
-
-                    await solutionAnalyzer.LoadSolution();
+                    await solutionAnalyzer.LoadSolution(options.ExcludingAssemblies);
 
                     var projectAnalyzer = new ProjectAnalyzer(solutionAnalyzer.ParsedSolution, solutionAnalyzer.OutputFiles, logger);
                     await projectAnalyzer.LoadProject(options.ProjectName);

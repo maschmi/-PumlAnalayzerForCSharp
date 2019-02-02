@@ -20,12 +20,14 @@ namespace Logger
         {         
         }
 
+        public void Verbose(string logmessage)
+        {
+        }
+
         public void Warning(string logmessage)
         {            
         }
 
-        public void WriteLine(string logmessage)
-        {           
-        }
+        
     }
 }

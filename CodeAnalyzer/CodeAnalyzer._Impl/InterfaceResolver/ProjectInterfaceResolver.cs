@@ -54,7 +54,7 @@ namespace CodeAnalyzer.InterfaceResolver
             }
             catch (Exception ex)
             {
-                _logger.WriteLine(ex.ToString());
+                _logger.Info(ex.ToString());
             }
         }
 

@@ -6,8 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Buildalyzer" Version="2.2.0" />
-    <PackageReference Include="Buildalyzer.Workspaces" Version="2.2.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.0.0-beta2-final" />
   </ItemGroup>
 
   <ItemGroup>
