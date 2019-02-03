@@ -44,7 +44,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptanceTest.Net472", "Te
 		{DBCFB66A-F781-40A7-8F31-F9BD250872B9} = {DBCFB66A-F781-40A7-8F31-F9BD250872B9}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcceptanceTestNetCore", "Tests\AcceptanceTestNetCore\AcceptanceTestNetCore.csproj", "{D8200B98-1C7B-445C-9FCA-2AE1E9F81597}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AcceptanceTestNetCore", "Tests\AcceptanceTestNetCore\AcceptanceTestNetCore.csproj", "{D8200B98-1C7B-445C-9FCA-2AE1E9F81597}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DBCFB66A-F781-40A7-8F31-F9BD250872B9} = {DBCFB66A-F781-40A7-8F31-F9BD250872B9}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
