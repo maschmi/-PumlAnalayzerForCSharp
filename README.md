@@ -18,6 +18,12 @@ In case of the netcore version you will also have to supply the path to the MSBu
 A typical call will be look like:
 ```WinSeqDiag -s C:\source\myprojec\mysolution.sln -p MyProject -c MyClass -m MyMethod -o C:\temp\somediagram.wsd```
 
+## How to compile
+The solution is multitarget for .NET 4.7.2 and .netcore 2.2. Be sure to install the v3 pre-releases of Microsoft.CodeAnalysis nuget packages, these are needed for .netcore support.
+Main differenece between bot targets are the solution and project analyzers. .NET 4.7.2 relies on the MSBuildLocator package which is not available for .netcore.
+
+Expect to see failing acceptance tests if you change code in the DemoNet project or if the DemoNet project is not a build dependency of the acceptance test projects.
+
 ## Useful resources
 * [Generate diagrams from C# source code using Roslyn](https://tomassetti.me/generate-diagrams-csharp/)
 * [Learn roslyn](https://joshvarty.com/learn-roslyn-now/)
