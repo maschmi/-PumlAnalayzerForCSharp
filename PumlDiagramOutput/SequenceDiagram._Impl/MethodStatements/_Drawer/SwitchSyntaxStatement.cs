@@ -33,7 +33,7 @@ namespace SequenceDiagram.MethodStatements
             var switchSyntaxTree = (SwitchStatementSyntax)syntaxSymbol.Item1.TrackNodes();
             string switchOn = switchSyntaxTree.Expression.ToString();
             _logger.Debug(method.MethodName + "\tStart Of Switch");
-            Diagram.AppendLine(_startTag +  " [ " + switchOn +"]");
+            Diagram.AppendLine(_startTag +  " [" + switchOn +"]");
 
             var endStatement = syntaxSymbol.Item1.Span.End;
             var scope = new StatementScope(method, syntaxSymbol.Item1, _endTag);

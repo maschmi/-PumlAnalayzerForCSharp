@@ -3,7 +3,6 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using CodeAnalyzer;
 using CodeAnalyzer.Context;
 using CodeAnalyzer.InterfaceResolver;
 using Logger;
@@ -60,20 +59,6 @@ namespace WinSeqDiag
                 await fs.WriteAsync(diagram, 0, diagram.Length);
             }
         }
-
-        private static string GetBasePath(string sep)
-        {
-            var assemblyPath = GetAssemblyDirectory();
-            var projectPath = assemblyPath.Substring(0, assemblyPath.IndexOf("WinSeqDiag"));
-            return projectPath.Split(new string[] { sep }, 2, StringSplitOptions.None)[0];
-        }
-
-        private static string GetAssemblyDirectory()
-        {
-            string codeBase = Assembly.GetExecutingAssembly().CodeBase;
-            UriBuilder uri = new UriBuilder(codeBase);
-            string path = Uri.UnescapeDataString(uri.Path);
-            return Path.GetDirectoryName(path);
-        }
+     
     }
 }

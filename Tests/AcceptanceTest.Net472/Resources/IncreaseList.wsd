@@ -1,0 +1,49 @@
+﻿@startuml
+ --> DemoNet.ClassA.IncreaseList
+loop MyList
+DemoNet.ClassA.IncreaseList -> DemoNet.ClassA : DoNothing
+activate DemoNet.ClassA
+group create NotImplementedException
+DemoNet.ClassA -> NotImplementedException : new"()"
+NotImplementedException --> DemoNet.ClassA
+end
+DemoNet.ClassA --> DemoNet.ClassA.IncreaseList
+deactivate DemoNet.ClassA
+end
+loop "i < MyList.Count"
+DemoNet.ClassA.IncreaseList -> int : ToString
+activate int
+int --> DemoNet.ClassA.IncreaseList : string
+deactivate int
+alt "MyList.Count > 1"
+DemoNet.ClassA.IncreaseList -> DemoNet.ClassB : "WriteList(System.Collections.Generic.IEnumerable<int>)"
+activate DemoNet.ClassB
+loop stringList
+DemoNet.ClassB -> System.Console : "WriteLine(int)"
+activate System.Console
+System.Console --> DemoNet.ClassB
+deactivate System.Console
+end
+DemoNet.ClassB --> DemoNet.ClassA.IncreaseList
+deactivate DemoNet.ClassB
+else 
+DemoNet.ClassA.IncreaseList -> DemoNet.ClassB : WriteToLog
+activate DemoNet.ClassB
+DemoNet.ClassB -> System.Console : "WriteLine(string)"
+activate System.Console
+System.Console --> DemoNet.ClassB
+deactivate System.Console
+DemoNet.ClassB --> DemoNet.ClassA.IncreaseList
+deactivate DemoNet.ClassB
+end
+end
+DemoNet.ClassA.IncreaseList -> DemoNet.ClassA : DoNothing
+activate DemoNet.ClassA
+group create NotImplementedException
+DemoNet.ClassA -> NotImplementedException : new"()"
+NotImplementedException --> DemoNet.ClassA
+end
+DemoNet.ClassA --> DemoNet.ClassA.IncreaseList
+deactivate DemoNet.ClassA
+DemoNet.ClassA.IncreaseList --> 
+@enduml
