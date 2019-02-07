@@ -30,7 +30,7 @@ namespace SequenceDiagram.MethodStatements
 
             var ifSyntaxTree = (IfStatementSyntax)syntaxSymbol.Item1.TrackNodes();
             _logger.Debug(method.MethodName + "\tStart Of If");
-            Diagram.AppendLine(_altTag + ifSyntaxTree.Condition.ToString().MaskSpecialChars());
+            Diagram.AppendLine(_altTag + ifSyntaxTree.Condition.ToString().MakeItSingleLine().MaskSpecialChars());
 
             var scope = new StatementScope(method, syntaxSymbol.Item1, _endTag);
             await AnalyzeMethod(method, depth, scope);

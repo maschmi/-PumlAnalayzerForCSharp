@@ -32,7 +32,7 @@ namespace SequenceDiagram.MethodStatements
             var forEachSyntaxTree = (ForEachStatementSyntax)syntaxSymbol.Item1.TrackNodes();
             var loopCondition = forEachSyntaxTree.Expression.ToString();
             _logger.Debug(method.MethodName + "\tStart of Foreach " + loopCondition);
-            Diagram.AppendLine(_loopStart + loopCondition.MaskSpecialChars());
+            Diagram.AppendLine(_loopStart + loopCondition.MakeItSingleLine().MaskSpecialChars());
 
             var scope = new StatementScope(method, syntaxSymbol.Item1, _loopEnd);
             await AnalyzeMethod(method, depth, scope);            

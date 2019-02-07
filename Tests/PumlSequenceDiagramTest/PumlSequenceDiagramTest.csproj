@@ -5,6 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="TestData\SingleMethod\Resource\ForSyntaxTestDataClass.cs" />
+    <Compile Remove="TestData\SingleMethod\Resource\IfSyntaxTestDataClass.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\SingleMethod\Resource\ForSyntaxTestDataClass.cs" />
+    <EmbeddedResource Include="TestData\SingleMethod\Resource\IfSyntaxTestDataClass.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentAssertions" Version="5.6.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="Moq" Version="4.10.1" />
