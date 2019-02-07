@@ -2,6 +2,7 @@
 using CodeAnalyzer.SyntaxAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using SequenceDiagram.Extensions;
 using SequenceDiagram.MethodStatements.Scopes;
 using System;
 using System.Text;

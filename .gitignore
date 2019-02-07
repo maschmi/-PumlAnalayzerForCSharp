@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /demo2.wsd
 /demo3.wsd
+/.vscode

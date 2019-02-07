@@ -28,7 +28,7 @@ namespace SequenceDiagram.MethodStatements
         {
             var node = (ReturnStatementSyntax)syntaxSymbol.Item1;
             var expression = node.Expression.ToString();
-            Diagram.AppendLine(_startTag + expression.MaskSpecialChars());
+            Diagram.AppendLine(_startTag + expression.MakeItSingleLine().MaskSpecialChars());
             var scope = new StatementScope(method, node, _endTag);
             await AnalyzeMethod(method, depth, scope);
         }

@@ -33,7 +33,7 @@ namespace SequenceDiagram.MethodStatements
 
             _logger.Debug(method.MethodName + "\tStart of For "+loopCondition);
 
-            Diagram.AppendLine(_loopStart + loopCondition.MaskSpecialChars());
+            Diagram.AppendLine(_loopStart + loopCondition.MakeItSingleLine().MaskSpecialChars());
 
             var scope = new StatementScope(method, syntaxSymbol.Item1, _loopEnd);
             await AnalyzeMethod(method, depth, scope);
