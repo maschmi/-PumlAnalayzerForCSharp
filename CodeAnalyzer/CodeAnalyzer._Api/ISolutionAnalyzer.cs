@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Buildalyzer;
 using Microsoft.CodeAnalysis;
 
 namespace CodeAnalyzer
@@ -13,6 +12,7 @@ namespace CodeAnalyzer
         IEnumerable<Project> Projects { get; }
 
         void Dispose();
+        Task LoadSolution(string solutionPath, string excludeFiles, string msBuildPath);
         Task LoadSolution(string excludeFiles);
     }
 }

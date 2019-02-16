@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CodeAnalyzer\CodeAnalyzer.Service\CodeAnalyzer.Service.csproj" />
     <ProjectReference Include="..\..\CodeAnalyzer\CodeAnalyzer._Api\CodeAnalyzer._Api.csproj" />
     <ProjectReference Include="..\..\CodeAnalyzer\SolutionAnalyzer._Impl\WorkspaceAnalyzer._Impl.csproj" />
     <ProjectReference Include="..\..\PumlDiagramOutput\SequenceDiagram._Impl\SequenceDiagram._Impl.csproj" />

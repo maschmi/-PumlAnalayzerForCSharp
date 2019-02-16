@@ -7,7 +7,6 @@ using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
 using Logger;
-using Buildalyzer;
 using CodeAnalyzer;
 
 namespace WorkspaceAnalyzer.Windows
@@ -130,6 +129,11 @@ namespace WorkspaceAnalyzer.Windows
             Dispose(true);
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
+        }
+
+        public Task LoadSolution(string solutionPath, string excludeFiles, string msBuildPath)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

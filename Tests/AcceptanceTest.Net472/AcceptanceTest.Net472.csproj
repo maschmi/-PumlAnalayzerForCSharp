@@ -83,7 +83,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common">
-      <Version>3.0.0-beta2-final</Version>
+      <Version>3.0.0-beta3-final</Version>
     </PackageReference>
     <PackageReference Include="NUnit">
       <Version>3.11.0</Version>

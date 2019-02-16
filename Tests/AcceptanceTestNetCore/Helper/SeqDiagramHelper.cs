@@ -19,16 +19,23 @@ namespace AcceptanceTestNetCore.Helper
         private const string _resourcesNamespace = "AcceptanceTestNetCore.Resources";
         private const string _testDir = @"..";
         private const string _solutionName = "CodeDocumentations.sln";
-        private const string _projectName = "DemoNet";        
+        private const string _projectName = "DemoNet";
+        private string _solutionDir;
+
+        public string SoltuionDirectory { get => _solutionDir; }
+
+        public SeqDiagramHelper()
+        {
+            _solutionDir = Path.Combine(GetTestDataPath(), _testDir, _solutionName);
+        }
 
         public async Task<string> CreateDiagram(string msBuildPath, string className, string methodName, string excludingAssemblies)
-        {
-            var solutionDir = Path.Combine(GetTestDataPath(), _testDir, _solutionName);
+        {           
             
             var cfgCtx = new ConfigContext(InterfaceResolverType.ProjectLevel);
             IDoLog logger = new NullLogger();
 
-            using (var solutionAnalyzer = new SolutionAnalyzer(solutionDir, msBuildPath, logger))
+            using (var solutionAnalyzer = new SolutionAnalyzer(_solutionDir, msBuildPath, logger))
             {
                 await solutionAnalyzer.LoadSolution(excludingAssemblies);
 

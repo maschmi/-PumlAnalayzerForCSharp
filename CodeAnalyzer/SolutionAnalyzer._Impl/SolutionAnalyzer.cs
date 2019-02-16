@@ -13,15 +13,22 @@ namespace WorkspaceAnalyzer
     public class SolutionAnalyzer : IDisposable, ISolutionAnalyzer
     {
         private IDoLog _logger;
-        private readonly string _solution;
-        private readonly string _msBuildPath;
+        private string _solution;
+        private string _msBuildPath;
         private MSBuildWorkspace _workspace;
         private bool disposedValue = false; // To detect redundant calls
 
         public Solution ParsedSolution { get; private set; }
         public IEnumerable<string> OutputFiles { get; private set; }
         public IEnumerable<Project> Projects => ParsedSolution.Projects;
-      
+
+        public SolutionAnalyzer(IDoLog logger = null)
+        {
+            if (logger == null)
+                logger = new NullLogger();
+            _logger = logger;
+        }
+
         public SolutionAnalyzer(string solution, string msbuildPath, IDoLog logger = null)
         {
             if (!File.Exists(solution))
@@ -32,6 +39,15 @@ namespace WorkspaceAnalyzer
             if (logger == null)
                 logger = new NullLogger();
             _logger = logger;
+        }
+
+        public async Task LoadSolution(string solutionPath, string excludeFiles, string msBuildPath)
+        {
+            if (!File.Exists(solutionPath))
+                throw new FileNotFoundException("Solution not found! Was looking for " + solutionPath);
+            _solution = solutionPath;
+            _msBuildPath = msBuildPath;
+            await LoadSolution(excludeFiles);
         }
 
         public async Task LoadSolution(string excludeFiles)

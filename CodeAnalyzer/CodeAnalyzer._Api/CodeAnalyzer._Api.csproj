@@ -10,12 +10,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Buildalyzer" Version="2.2.0" />
-    <PackageReference Include="Buildalyzer.Workspaces" Version="2.2.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="3.0.0-beta2-final" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.0.0-beta2-final" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.0.0-beta2-final" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="3.0.0-beta2-final" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="3.0.0-beta3-final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.0.0-beta3-final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.0.0-beta3-final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="3.0.0-beta3-final" />
   </ItemGroup>
 
   <ItemGroup>
