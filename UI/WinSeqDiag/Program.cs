@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CodeAnalyzer.Context;
 using CodeAnalyzer.InterfaceResolver;
+using CodeAnalyzer.Service;
 using Logger;
 using SequenceDiagram;
 using WorkspaceAnalyzer.Windows;
@@ -26,21 +27,33 @@ namespace WinSeqDiag
 
 
                 IDoLog logger = new ConsoleLogger(verbose: options.VerboseLogging, debug: options.DebugLogging);
-                using (var solutionAnalyzer = new SolutionAnalyzer(options.PathToSolution, logger))
+                if(options.ListProjectAndExit)
                 {
-                    await solutionAnalyzer.LoadSolution(options.ExcludingAssemblies);
+                    using (var workplaceService = new WorkplaceService())
+                    {
+                        await LoadSolution(workplaceService, options);
+                        await LoadProject(workplaceService, options);
+                        return;
+                    }
+                }
+                else
+                {
+                    using (var solutionAnalyzer = new SolutionAnalyzer(options.PathToSolution, logger))
+                    {
+                        await solutionAnalyzer.LoadSolution(options.ExcludingAssemblies);
 
-                    var projectAnalyzer = new ProjectAnalyzer(solutionAnalyzer.ParsedSolution, solutionAnalyzer.OutputFiles, logger);
-                    await projectAnalyzer.LoadProject(options.ProjectName);
+                        var projectAnalyzer = new ProjectAnalyzer(solutionAnalyzer.ParsedSolution, solutionAnalyzer.OutputFiles, logger);
+                        await projectAnalyzer.LoadProject(options.ProjectName);
 
-                    var interfaceResolver = InterfaceResolverFactory.GetInterfaceResolver(solutionAnalyzer, projectAnalyzer, logger, cfgCtx);
+                        var interfaceResolver = InterfaceResolverFactory.GetInterfaceResolver(solutionAnalyzer, projectAnalyzer, logger, cfgCtx);
 
-                    var sequenceDiagram = new SequenceDiagramGenerator(projectAnalyzer.AnalyzedClasses, interfaceResolver, logger);
-                    string diagramText = await sequenceDiagram.GetSequenceDiagramForMethod(options.ClassName, options.MethodName);
+                        var sequenceDiagram = new SequenceDiagramGenerator(projectAnalyzer.AnalyzedClasses, interfaceResolver, logger);
+                        string diagramText = await sequenceDiagram.GetSequenceDiagramForMethod(options.ClassName, options.MethodName);
 
-                    await WriteDiagramToFile(diagramText, options.OutputFile);
+                        await WriteDiagramToFile(diagramText, options.OutputFile);
 
-                    Console.WriteLine("Wrote to " + options.OutputFile);
+                        Console.WriteLine("Wrote to " + options.OutputFile);
+                    }
                 }
             }
             catch (InvalidOperationException ex)
@@ -49,6 +62,21 @@ namespace WinSeqDiag
             }
             
             Console.WriteLine("Finished...");            
+        }
+
+        private static async Task LoadProject(WorkplaceService workplaceService, ProgramOptions options)
+        {
+            await workplaceService.LoadProject(options.ProjectName);
+            var analyzedClasses = workplaceService.GetAnalyzedClasses();
+
+            foreach (var cls in analyzedClasses)
+                Console.WriteLine(cls);
+        }
+
+        private static async Task LoadSolution(WorkplaceService workplaceService, ProgramOptions options)
+        {
+            
+                await workplaceService.LoadSolution(options.PathToSolution, options.ExcludingAssemblies, string.Empty, string.Empty);                          
         }
 
         private static async Task WriteDiagramToFile(string diagramText, string outputFile)

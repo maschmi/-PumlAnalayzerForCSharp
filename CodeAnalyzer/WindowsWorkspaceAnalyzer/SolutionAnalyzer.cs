@@ -136,6 +136,11 @@ namespace WorkspaceAnalyzer.Windows
             throw new NotImplementedException();
         }
 
+        public Task LoadSolution(string solutionPath, string excludeFiles, string frameworkProperty, string msBuildPath)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

@@ -18,6 +18,16 @@ namespace WorkspaceAnalyzer
         public IDictionary<string, IFileStructure> AnalyzedFiles { get; private set; }
         public IDictionary<string, IClassStructure> AnalyzedClasses { get; private set; }
 
+        public ProjectAnalyzer(ISolutionAnalyzer solutionAnalyzer, IDoLog logger)
+        {
+            _solution = solutionAnalyzer.ParsedSolution;
+            _outputFiles = solutionAnalyzer.OutputFiles;
+            if (logger == null)
+                logger = new NullLogger();
+
+            _logger = logger;
+        }
+
         public ProjectAnalyzer(Solution solution, IEnumerable<string> solutionOutputFiles, IDoLog logger)
         {
             _solution = solution;

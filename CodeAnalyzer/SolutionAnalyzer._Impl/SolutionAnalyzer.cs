@@ -41,16 +41,16 @@ namespace WorkspaceAnalyzer
             _logger = logger;
         }
 
-        public async Task LoadSolution(string solutionPath, string excludeFiles, string msBuildPath)
+        public async Task LoadSolution(string solutionPath, string excludeFiles, string frameworkProperty, string msBuildPath)
         {
             if (!File.Exists(solutionPath))
                 throw new FileNotFoundException("Solution not found! Was looking for " + solutionPath);
             _solution = solutionPath;
             _msBuildPath = msBuildPath;
-            await LoadSolution(excludeFiles);
+            await LoadSolution(excludeFiles, frameworkProperty);
         }
 
-        public async Task LoadSolution(string excludeFiles)
+        public async Task LoadSolution(string excludeFiles, string frameworkProperty)
         {
             var msBuildPath = _msBuildPath;
             if (!(msBuildPath.EndsWith("MSBuild.dll", StringComparison.InvariantCultureIgnoreCase)))
@@ -58,8 +58,14 @@ namespace WorkspaceAnalyzer
 
             _logger.Info("Using MSBuild at " + msBuildPath);
             Environment.SetEnvironmentVariable("MSBUILD_EXE_PATH", msBuildPath);
-
-            _workspace = MSBuildWorkspace.Create();
+            if (string.IsNullOrEmpty(frameworkProperty))
+                _workspace = MSBuildWorkspace.Create();
+            else
+            {
+                var properties = new Dictionary<string, string>();
+                properties.Add("TargetFrameworkVersion", frameworkProperty); 
+                _workspace = MSBuildWorkspace.Create(properties);
+            }
             await LoadSolutionImpl(excludeFiles);
         }
 
@@ -126,8 +132,13 @@ namespace WorkspaceAnalyzer
             Dispose(true);
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
-        }      
-      
+        }
+
+        public Task LoadSolution(string excludeFiles)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

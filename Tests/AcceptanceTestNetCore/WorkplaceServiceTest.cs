@@ -26,7 +26,7 @@ namespace AcceptanceTestNetCore.Sercices
         {
             using (var service = new WorkplaceService())
             {
-                await service.LoadSolution(_solutionDir, null, _msBuildFallback);
+                await service.LoadSolution(_solutionDir, null, null, _msBuildFallback);
                 service.GetOutputFiles();
             }
             

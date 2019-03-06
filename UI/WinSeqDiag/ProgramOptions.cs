@@ -14,11 +14,12 @@ namespace WinSeqDiag
         public string ProjectName { get; set; }
         public string ClassName { get; set; }
         public string MethodName { get; set; }
-        public string OutputFile { get; set; }        
+        public string OutputFile { get; set; }
         public string ExcludingAssemblies { get; private set; }
         public bool VerboseLogging { get; private set; }
         public bool DebugLogging { get; private set; }
         public string DemoCase { get; private set; }
+        public bool ListProjectAndExit { get; private set; }
 
         private const string HELP_TEXT =
             "This helper program tries to draw a seqence diagram with a maximal depth of 10 from the given method.\n" +
@@ -31,6 +32,7 @@ namespace WinSeqDiag
             "\t -x \t Assemblies including the specifier will be excluded \n" +
             "\t -verbose \t Writes verbose log messages \n" +
             "\t -debug \t Writes debug log messages \n" +
+            "\t -list \t Lists projects in the solution \n" + 
             "\n" +
             "Known issues \n " +
             "- Project to be analyzed must be compiled in debug setting first \n" +
@@ -98,6 +100,10 @@ namespace WinSeqDiag
                     case "-d1":
                     case "-dev":
                         DemoCase = args[i];
+                        break;
+
+                    case "-list":
+                        ListProjectAndExit = true;
                         break;
 
                     default:

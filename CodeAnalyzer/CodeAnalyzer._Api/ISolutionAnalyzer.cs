@@ -12,7 +12,7 @@ namespace CodeAnalyzer
         IEnumerable<Project> Projects { get; }
 
         void Dispose();
-        Task LoadSolution(string solutionPath, string excludeFiles, string msBuildPath);
+        Task LoadSolution(string solutionPath, string excludeFiles, string frameworkProperty, string msBuildPath);
         Task LoadSolution(string excludeFiles);
     }
 }
