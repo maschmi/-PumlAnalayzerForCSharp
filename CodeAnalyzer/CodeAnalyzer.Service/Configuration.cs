@@ -31,6 +31,7 @@ namespace CodeAnalyzer.Service
         {
             _serviceCollection.AddScoped<IProjectAnalyzer, ProjectAnalyzer>();
             _serviceCollection.AddScoped<ISolutionAnalyzer, SolutionAnalyzer>();
+            _serviceCollection.AddScoped<IClassAnalyzer, ClassAnalyzer>();
         }
     }
 }

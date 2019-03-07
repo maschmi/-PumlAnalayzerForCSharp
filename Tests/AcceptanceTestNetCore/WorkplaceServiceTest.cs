@@ -20,17 +20,6 @@ namespace AcceptanceTestNetCore.Sercices
             var helper = new SeqDiagramHelper();
             _solutionDir = helper.SoltuionDirectory;
         }
-
-        [Test]
-        public async Task WorkplaceSevice_LoadSolution_EverythingLoaded()
-        {
-            using (var service = new WorkplaceService())
-            {
-                await service.LoadSolution(_solutionDir, null, null, _msBuildFallback);
-                service.GetOutputFiles();
-            }
-            
-            
-        }
+        
     }
 }

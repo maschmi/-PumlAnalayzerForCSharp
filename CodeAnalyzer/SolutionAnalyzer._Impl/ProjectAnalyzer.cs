@@ -2,6 +2,7 @@
 using CodeAnalyzer.SyntaxAnalysis;
 using Logger;
 using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,6 @@ namespace WorkspaceAnalyzer
     {
         private readonly Solution _solution;
         private readonly IDoLog _logger;
-        private IEnumerable<string> _outputFiles;
 
         public IDictionary<string, IFileStructure> AnalyzedFiles { get; private set; }
         public IDictionary<string, IClassStructure> AnalyzedClasses { get; private set; }
@@ -21,18 +21,15 @@ namespace WorkspaceAnalyzer
         public ProjectAnalyzer(ISolutionAnalyzer solutionAnalyzer, IDoLog logger)
         {
             _solution = solutionAnalyzer.ParsedSolution;
-            _outputFiles = solutionAnalyzer.OutputFiles;
             if (logger == null)
                 logger = new NullLogger();
 
             _logger = logger;
         }
 
-        public ProjectAnalyzer(Solution solution, IEnumerable<string> solutionOutputFiles, IDoLog logger)
+        public ProjectAnalyzer(Solution solution, IDoLog logger)
         {
             _solution = solution;
-            _outputFiles = solutionOutputFiles;
-
             if (logger == null)
                 logger = new NullLogger();
 
@@ -43,17 +40,18 @@ namespace WorkspaceAnalyzer
         {
             var testProject = _solution.Projects.Where(p => p.Name == project).FirstOrDefault();
             _logger.Info("Loaded " + testProject.Name);
-            await AnalyzeProject(testProject, _outputFiles);
+            await AnalyzeProject(testProject);
         }
 
-        private async Task AnalyzeProject(Project testProject, IEnumerable<string> solutionAssemblies)
+        private async Task AnalyzeProject(Project testProject)
         {
             var documents = testProject.Documents
                 .Where(d => d.SourceCodeKind == SourceCodeKind.Regular && d.SupportsSyntaxTree == true)
                 .Where(d => !d.FilePath.Contains("AssemblyInfo"))
                 .Select(d => d.FilePath).ToArray();
+            var referencedAssembliesInSoltuion = CalculateReferncedSolutionAssemblies(testProject);
 
-            AnalyzedFiles = await ParseFiles(documents, solutionAssemblies, testProject);
+            AnalyzedFiles = await ParseFiles(documents, referencedAssembliesInSoltuion, testProject);
 
             AnalyzedClasses = new Dictionary<string, IClassStructure>();
             foreach (var file in AnalyzedFiles)
@@ -64,18 +62,32 @@ namespace WorkspaceAnalyzer
             }
         }
 
-        private async Task<IDictionary<string, IFileStructure>> ParseFiles(string[] documents, IEnumerable<string> solutionAssemblies, Project testProject)
+        private async Task<IDictionary<string, IFileStructure>> ParseFiles(string[] documents, IEnumerable<string> referencedAssembliesInSoltuion,  Project testProject)
         {
             var analyzedFiles = new ConcurrentDictionary<string, IFileStructure>();
-            await Task.WhenAll(documents.Select(srcFile => ParseFileClasses(srcFile, solutionAssemblies, testProject, analyzedFiles)));
+            await Task.WhenAll(documents.Select(srcFile => ParseFileClasses(srcFile, referencedAssembliesInSoltuion, testProject, analyzedFiles)));
             return analyzedFiles;
         }
 
-        private async Task ParseFileClasses(string file, IEnumerable<string> solutionAssemblies, Project testProject, ConcurrentDictionary<string, IFileStructure> analyzedFiles)
+        private async Task ParseFileClasses(string file, IEnumerable<string> referencedAssembliesInSoltuion, Project testProject, ConcurrentDictionary<string, IFileStructure> analyzedFiles)
         {
-            var analyzer = new FileStructureAnalyzer(file, solutionAssemblies, testProject.MetadataReferences);
+            var analyzer = new FileStructureAnalyzer(file, referencedAssembliesInSoltuion, testProject.MetadataReferences);
             await analyzer.AnalyzeFile();
             analyzedFiles.TryAdd(file, analyzer.GetFileStrucuture());
+        }
+
+        private IEnumerable<string> CalculateReferncedSolutionAssemblies(Project testProject)
+        {
+            List<string> outputFiles = new List<string>();
+            ProjectReference[] projectRefs = testProject.ProjectReferences.ToArray();
+
+            foreach (var reference in  projectRefs)
+            {
+                var referencedProject = _solution.Projects.First(p => p.Id == reference.ProjectId);
+                outputFiles.Add(referencedProject.OutputFilePath);
+                outputFiles.AddRange(CalculateReferncedSolutionAssemblies(referencedProject));
+            }
+            return outputFiles;
         }
     }
 }

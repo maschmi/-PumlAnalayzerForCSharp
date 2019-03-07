@@ -19,7 +19,6 @@ namespace WorkspaceAnalyzer
         private bool disposedValue = false; // To detect redundant calls
 
         public Solution ParsedSolution { get; private set; }
-        public IEnumerable<string> OutputFiles { get; private set; }
         public IEnumerable<Project> Projects => ParsedSolution.Projects;
 
         public SolutionAnalyzer(IDoLog logger = null)
@@ -82,16 +81,7 @@ namespace WorkspaceAnalyzer
             //var solution = await workspace.OpenSolutionAsync(solutionPath, new ConsoleProgressReporter());
             ParsedSolution = await _workspace.OpenSolutionAsync(solutionPath);
             _logger.Info($"Finished loading solution '{solutionPath}'");
-            // TODO: Do analysis on the projects in the loaded solution
-
-            _logger.Info("Extracting ouputFiles");
-            if(string.IsNullOrWhiteSpace(excludeFiles))
-                OutputFiles = ParsedSolution.Projects
-                    .Select(p => p.OutputFilePath).ToList();
-            else
-                OutputFiles = ParsedSolution.Projects
-                    .Where(p => !(p.OutputFilePath.Contains(excludeFiles)))
-                    .Select(p => p.OutputFilePath).ToList();
+            // TODO: Do analysis on the projects in the loaded solution            
 
             _workspace.WorkspaceFailed -= WriteErrorMessage;
         }

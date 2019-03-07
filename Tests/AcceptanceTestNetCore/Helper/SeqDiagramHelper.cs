@@ -39,7 +39,7 @@ namespace AcceptanceTestNetCore.Helper
             {
                 await solutionAnalyzer.LoadSolution(excludingAssemblies);
 
-                var projectAnalyzer = new ProjectAnalyzer(solutionAnalyzer.ParsedSolution, solutionAnalyzer.OutputFiles, logger);
+                var projectAnalyzer = new ProjectAnalyzer(solutionAnalyzer.ParsedSolution, logger);
                 await projectAnalyzer.LoadProject(_projectName);
 
                 var interfaceResolver = InterfaceResolverFactory.GetInterfaceResolver(solutionAnalyzer, projectAnalyzer, logger, cfgCtx);

@@ -36,7 +36,7 @@ namespace SeqDiagram
 
                     await solutionAnalyzer.LoadSolution(options.ExcludingAssemblies);
 
-                    var projectAnalyzer = new ProjectAnalyzer(solutionAnalyzer.ParsedSolution, solutionAnalyzer.OutputFiles, logger);
+                    var projectAnalyzer = new ProjectAnalyzer(solutionAnalyzer.ParsedSolution, logger);
                     await projectAnalyzer.LoadProject(options.ProjectName);
 
                     var interfaceResolver = InterfaceResolverFactory.GetInterfaceResolver(solutionAnalyzer, projectAnalyzer, logger, cfgCtx);

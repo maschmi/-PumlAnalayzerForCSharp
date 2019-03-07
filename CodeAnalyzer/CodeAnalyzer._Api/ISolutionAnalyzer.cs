@@ -7,7 +7,6 @@ namespace CodeAnalyzer
 {
     public interface ISolutionAnalyzer
     {   
-        IEnumerable<string> OutputFiles { get; }
         Solution ParsedSolution { get; }
         IEnumerable<Project> Projects { get; }
 

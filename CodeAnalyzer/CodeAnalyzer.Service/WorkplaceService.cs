@@ -34,18 +34,6 @@ namespace CodeAnalyzer.Service
             await _projectAnalyzer.LoadProject(projectName);
         }
 
-        public IEnumerable<string> GetAnalyzedClasses()
-        {
-            if (_projectAnalyzer != null)
-                return _projectAnalyzer.AnalyzedClasses.Keys;
-
-            return new string[0];
-        }
-        public IEnumerable<string> GetOutputFiles()
-        {
-            CheckInitialization(_solutionAnalyzer);
-            return _solutionAnalyzer.OutputFiles;
-        }
 
         public IEnumerable<Project> GetProjects()
         {
@@ -57,7 +45,22 @@ namespace CodeAnalyzer.Service
         {
             CheckInitialization(_solutionAnalyzer);
             return _solutionAnalyzer.ParsedSolution;
-        }        
+        }
+        public IEnumerable<string> GetAnalyzedClasses()
+        {
+            CheckInitialization(_projectAnalyzer);
+            if (_projectAnalyzer != null)
+                return _projectAnalyzer.AnalyzedClasses.Keys;
+
+            return new string[0];
+        }
+        
+        public IEnumerable<string> GetMethodsOfClass(string className)
+        {
+            var classAnalyzer = _containerServiceScope.ServiceProvider.GetService<IClassAnalyzer>();
+            CheckInitialization(classAnalyzer);
+            return classAnalyzer.GetMethodNamesForClass(className);
+        }
 
         private void CheckInitialization(object check)
         {

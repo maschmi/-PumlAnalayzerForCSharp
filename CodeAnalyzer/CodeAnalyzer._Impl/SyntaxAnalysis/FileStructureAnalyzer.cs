@@ -53,7 +53,8 @@ namespace CodeAnalyzer.SyntaxAnalysis
             _path = Path.GetDirectoryName(filePath);
             _fullPath = filePath;
             _references = references.ToList();
-            foreach(var assembly in projectAssemblies)
+
+            foreach (var assembly in projectAssemblies)
             {
                 if (!File.Exists(assembly))
                     continue;

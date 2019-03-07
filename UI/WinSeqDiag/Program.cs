@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -32,7 +33,8 @@ namespace WinSeqDiag
                     using (var workplaceService = new WorkplaceService())
                     {
                         await LoadSolution(workplaceService, options);
-                        await LoadProject(workplaceService, options);
+                        var classes = await GetClassesInProject(workplaceService, options);
+                        PrintMethodsInClasses(workplaceService, classes);
                         return;
                     }
                 }
@@ -64,13 +66,29 @@ namespace WinSeqDiag
             Console.WriteLine("Finished...");            
         }
 
-        private static async Task LoadProject(WorkplaceService workplaceService, ProgramOptions options)
+        private static void PrintMethodsInClasses(WorkplaceService workplaceService, IEnumerable<string> classes)
+        {
+            foreach(var cls in classes)
+            {
+                Console.WriteLine("Methods in Class " + cls);
+                PrintClasses(workplaceService, cls);
+                
+            }
+        }
+
+        private static void PrintClasses(WorkplaceService workplaceService, string cls)
+        {
+            var methods = workplaceService.GetMethodsOfClass(cls);
+            foreach (var method in methods)
+            {
+                Console.WriteLine("\t " + method);
+            }
+        }
+
+        private static async Task<IEnumerable<string>> GetClassesInProject(WorkplaceService workplaceService, ProgramOptions options)
         {
             await workplaceService.LoadProject(options.ProjectName);
-            var analyzedClasses = workplaceService.GetAnalyzedClasses();
-
-            foreach (var cls in analyzedClasses)
-                Console.WriteLine(cls);
+            return workplaceService.GetAnalyzedClasses();           
         }
 
         private static async Task LoadSolution(WorkplaceService workplaceService, ProgramOptions options)
