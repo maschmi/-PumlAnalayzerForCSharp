@@ -50,7 +50,7 @@ namespace WorkspaceAnalyzer.Windows
 
             // Attach progress reporter so we print projects as they are loaded.
             //var solution = await workspace.OpenSolutionAsync(solutionPath, new ConsoleProgressReporter());
-            ParsedSolution = await _workspace.OpenSolutionAsync(solutionPath);
+            ParsedSolution = await _workspace.OpenSolutionAsync(solutionPath);            
             _logger.Info($"Finished loading solution '{solutionPath}'");
             // TODO: Do analysis on the projects in the loaded solution
 

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,11 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Locator" Version="1.1.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.6.3" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.0.0-beta3-final" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="3.0.0-beta3-final" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="3.0.0-beta3-final" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.0.0-beta3-final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.9.0-beta1.final" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.0.0-beta4-final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="3.0.0-beta4-final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="3.0.0-beta4-final" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.0.0-beta4-final" />
   </ItemGroup>
 
   <ItemGroup>

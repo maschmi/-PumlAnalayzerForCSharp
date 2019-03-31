@@ -12,28 +12,32 @@ namespace WorkspaceAnalyzer
 {
     public class SolutionAnalyzer : IDisposable, ISolutionAnalyzer
     {
-        private IDoLog _logger;
-        private string _solution;
-        private string _msBuildPath;
+        private readonly IDoLog _logger;
+        private readonly IWorkspaceBuilder _workspaceBuilder;
+
+        private string _solution;       
+
         private MSBuildWorkspace _workspace;
         private bool disposedValue = false; // To detect redundant calls
 
         public Solution ParsedSolution { get; private set; }
         public IEnumerable<Project> Projects => ParsedSolution.Projects;
 
-        public SolutionAnalyzer(IDoLog logger = null)
+        public SolutionAnalyzer(IWorkspaceBuilder wsBuilder, IDoLog logger = null)
         {
             if (logger == null)
                 logger = new NullLogger();
             _logger = logger;
+
+            _workspaceBuilder = wsBuilder;
         }
 
-        public SolutionAnalyzer(string solution, string msbuildPath, IDoLog logger = null)
+        public SolutionAnalyzer(string solution, string msBuildPath, IDoLog logger = null)
         {
             if (!File.Exists(solution))
                 throw new FileNotFoundException("Solution not found! Was looking for " + solution);
             _solution = solution;
-            _msBuildPath = msbuildPath;
+            _workspace = _workspaceBuilder.WithMsBuildPath(msBuildPath).Build();
 
             if (logger == null)
                 logger = new NullLogger();
@@ -45,34 +49,20 @@ namespace WorkspaceAnalyzer
             if (!File.Exists(solutionPath))
                 throw new FileNotFoundException("Solution not found! Was looking for " + solutionPath);
             _solution = solutionPath;
-            _msBuildPath = msBuildPath;
-            await LoadSolution(excludeFiles, frameworkProperty);
+
+            _workspace = _workspaceBuilder
+                .WithMsBuildPath(msBuildPath)
+                .WithFrameworkProperty(frameworkProperty)
+                .Build();
+
+             await LoadSolutionIntoWorkspace(excludeFiles);
         }
+        
 
-        public async Task LoadSolution(string excludeFiles, string frameworkProperty)
-        {
-            var msBuildPath = _msBuildPath;
-            if (!(msBuildPath.EndsWith("MSBuild.dll", StringComparison.InvariantCultureIgnoreCase)))
-                msBuildPath = Path.Combine(msBuildPath, "MSBuild.dll");
-
-            _logger.Info("Using MSBuild at " + msBuildPath);
-            Environment.SetEnvironmentVariable("MSBUILD_EXE_PATH", msBuildPath);
-            if (string.IsNullOrEmpty(frameworkProperty))
-                _workspace = MSBuildWorkspace.Create();
-            else
-            {
-                var properties = new Dictionary<string, string>();
-                properties.Add("TargetFrameworkVersion", frameworkProperty); 
-                _workspace = MSBuildWorkspace.Create(properties);
-            }
-            await LoadSolutionImpl(excludeFiles);
-        }
-
-        private async Task LoadSolutionImpl(string excludeFiles)
+        private async Task LoadSolutionIntoWorkspace(string excludeFiles)
         {
             // Print message for WorkspaceFailed event to help diagnosing project load failures.
             _workspace.WorkspaceFailed += WriteErrorMessage;
-
 
             var solutionPath = _solution;
             _logger.Info($"Loading solution '{solutionPath}'");
@@ -80,6 +70,7 @@ namespace WorkspaceAnalyzer
             // Attach progress reporter so we print projects as they are loaded.
             //var solution = await workspace.OpenSolutionAsync(solutionPath, new ConsoleProgressReporter());
             ParsedSolution = await _workspace.OpenSolutionAsync(solutionPath);
+            
             _logger.Info($"Finished loading solution '{solutionPath}'");
             // TODO: Do analysis on the projects in the loaded solution            
 

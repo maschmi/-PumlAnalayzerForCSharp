@@ -15,6 +15,7 @@ namespace WinSeqDiag
 {
     public class Program
     {
+        private static string MSBUILD_PATH = @"C:\Program Files\dotnet\sdk\2.2.103";
         public static async Task Main(string[] args)
         {
             var cfgCtx = new ConfigContext(InterfaceResolverType.ProjectLevel);
@@ -31,7 +32,7 @@ namespace WinSeqDiag
                 if(options.ListProjectAndExit)
                 {
                     using (var workplaceService = new WorkplaceService())
-                    {
+                    {                        
                         await LoadSolution(workplaceService, options);
                         var classes = await GetClassesInProject(workplaceService, options);
                         PrintMethodsInClasses(workplaceService, classes);
@@ -94,7 +95,7 @@ namespace WinSeqDiag
         private static async Task LoadSolution(WorkplaceService workplaceService, ProgramOptions options)
         {
             
-                await workplaceService.LoadSolution(options.PathToSolution, options.ExcludingAssemblies, string.Empty, string.Empty);                          
+                await workplaceService.LoadSolution(options.PathToSolution, options.ExcludingAssemblies, string.Empty, MSBUILD_PATH);                          
         }
 
         private static async Task WriteDiagramToFile(string diagramText, string outputFile)

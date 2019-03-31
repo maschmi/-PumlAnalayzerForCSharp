@@ -22,14 +22,12 @@ namespace CodeAnalyzer.Service
 
         public async Task LoadSolution(string solutionPath, string excludeFiles, string frameworkProperty, string msBuildPath)
         {
-            var logger = _containerServiceScope.ServiceProvider.GetService<IDoLog>();
             _solutionAnalyzer = _containerServiceScope.ServiceProvider.GetService<ISolutionAnalyzer>();
             await _solutionAnalyzer.LoadSolution(solutionPath, excludeFiles, frameworkProperty, msBuildPath);
         }
 
         public async Task LoadProject(string projectName)
         {
-            var logger = _containerServiceScope.ServiceProvider.GetService<IDoLog>();
             _projectAnalyzer = _containerServiceScope.ServiceProvider.GetService<IProjectAnalyzer>();
             await _projectAnalyzer.LoadProject(projectName);
         }
