@@ -11,7 +11,7 @@ namespace CodeAnalyzer.Service
     public class WorkplaceService : IDisposable
     {
         private IServiceScope _containerServiceScope;
-        private ISolutionAnalyzer _solutionAnalyzer;
+        private ISolutionLoader _solutionAnalyzer;
         private IProjectAnalyzer _projectAnalyzer;
 
         public WorkplaceService()
@@ -22,7 +22,7 @@ namespace CodeAnalyzer.Service
 
         public async Task LoadSolution(string solutionPath, string excludeFiles, string frameworkProperty, string msBuildPath)
         {
-            _solutionAnalyzer = _containerServiceScope.ServiceProvider.GetService<ISolutionAnalyzer>();
+            _solutionAnalyzer = _containerServiceScope.ServiceProvider.GetService<ISolutionLoader>();
             await _solutionAnalyzer.LoadSolution(solutionPath, excludeFiles, frameworkProperty, msBuildPath);
         }
 

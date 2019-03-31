@@ -31,7 +31,7 @@ namespace SeqDiagram
                     msBuildPath = @"C:\Program Files\dotnet\sdk\2.2.103";
                     logger.Warning("No Path to MSBuild given falling back to " + msBuildPath);
                 }
-                using (var solutionAnalyzer = new SolutionAnalyzer(options.PathToSolution, msBuildPath, logger))
+                using (var solutionAnalyzer = new SolutionLoader(options.PathToSolution, msBuildPath, logger))
                 {
 
                     await solutionAnalyzer.LoadSolution(options.ExcludingAssemblies);

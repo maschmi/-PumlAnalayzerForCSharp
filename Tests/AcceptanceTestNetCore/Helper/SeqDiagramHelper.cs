@@ -34,8 +34,8 @@ namespace AcceptanceTestNetCore.Helper
             
             var cfgCtx = new ConfigContext(InterfaceResolverType.ProjectLevel);
             IDoLog logger = new NullLogger();
-
-            using (var solutionAnalyzer = new SolutionAnalyzer(_solutionDir, msBuildPath, logger))
+            //TODO Use container
+            using (var solutionAnalyzer = new SolutionLoader(_solutionDir, msBuildPath, logger))
             {
                 await solutionAnalyzer.LoadSolution(excludingAssemblies);
 

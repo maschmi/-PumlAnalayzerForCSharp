@@ -5,13 +5,12 @@ using Microsoft.CodeAnalysis;
 
 namespace CodeAnalyzer
 {
-    public interface ISolutionAnalyzer
+    public interface ISolutionLoader
     {   
         Solution ParsedSolution { get; }
         IEnumerable<Project> Projects { get; }
 
         void Dispose();
-        Task LoadSolution(string solutionPath, string excludeFiles, string frameworkProperty, string msBuildPath);
-        Task LoadSolution(string excludeFiles);
+        Task LoadSolution(string solutionPath, string excludeFiles, string frameworkProperty, string msBuildPath);        
     }
 }

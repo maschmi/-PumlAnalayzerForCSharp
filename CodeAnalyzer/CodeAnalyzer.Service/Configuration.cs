@@ -30,8 +30,9 @@ namespace CodeAnalyzer.Service
         private static void RegisterWorkpalaceAnalyzer()
         {
             _serviceCollection.AddSingleton<IWorkspaceBuilder, WorkspaceBuilder>();
+            _serviceCollection.AddScoped<IWorkspaceManager, WorkspaceManager>();
             _serviceCollection.AddScoped<IProjectAnalyzer, ProjectAnalyzer>();
-            _serviceCollection.AddScoped<ISolutionAnalyzer, SolutionAnalyzer>();
+            _serviceCollection.AddScoped<ISolutionLoader, SolutionLoader>();
             _serviceCollection.AddScoped<IClassAnalyzer, ClassAnalyzer>();
         }
     }

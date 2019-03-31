@@ -11,7 +11,7 @@ using CodeAnalyzer;
 
 namespace WorkspaceAnalyzer.Windows
 {
-    public class SolutionAnalyzer : IDisposable, ISolutionAnalyzer
+    public class SolutionAnalyzer : IDisposable, ISolutionLoader
     {
         private IDoLog _logger;
         private readonly string _solution;        
